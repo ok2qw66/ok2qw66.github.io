@@ -1,8 +1,8 @@
 # Site settings
-title_left    : "Think"
-title_right   : "space" # default: ""
-description   : "Minimalist Jekyll theme for technical writing blog."
-keywords      : "Jekyll, theme, free, download, SEO, blog, web, minimalist, thinkspace"
+title_left    : "Sayo 의 개발일지"
+title_right   : "Sayo's Coding Note" # default: ""
+description   : "개발자가 되기 위해 준비중..."
+keywords      : "Java, Pyhton, Django, Cloud 공부중"
 url           : https://ok2qw66.github.io/ # site url
 baseurl       : "" # apply repo name like "/myproject" if used under gh-pages branch, else (under master branch) just leave empty/blank
 cover         : "" # image uri like logo/cover image for site seo
