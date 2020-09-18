@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "django project + mariadb"
+title:  "django project과 mariadb 연동하기(1)"
 slug: django project + mariadb
 date:   2020-09-19 12:15:50 +0900
 description: 도커 실습(1)
