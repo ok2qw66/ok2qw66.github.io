@@ -285,7 +285,7 @@ categories: Docker
 
 7.  장고 프로젝트 파일  컨테이너 안에 옮기기 (왼쪽 하단의 upload 버튼 누르기)
 
-   ![image-20200918230558409](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200918230558409.png)
+   ![뒤에서5](https://user-images.githubusercontent.com/69428620/93616330-920cfe80-fa0f-11ea-974c-33e5cfdc541d.png)
 
 ```
 root@98773843bb34:~# cd /home/django_playlist/
@@ -307,7 +307,7 @@ README.md  django_src  manage.py  plist  requirements.txt  venv
    root@98773843bb34:/home/django_playlist# vi django_src/settings.py
    ```
 
-   ![image-20200918231359997](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200918231359997.png)
+   ![뒤에서3](https://user-images.githubusercontent.com/69428620/93616324-90dbd180-fa0f-11ea-9e08-63ef594fbe3d.png)
 
 9. requirements.txt에 설치목록 설치하기
 
@@ -354,12 +354,12 @@ README.md  django_src  manage.py  plist  requirements.txt  venv
     Starting development server at http://0.0.0.0:8000/
     Quit the server with CONTROL-C.
     ```
-
-![image-20200918234906098](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200918234906098.png)
+![뒤에서2](https://user-images.githubusercontent.com/69428620/93616318-8f120e00-fa0f-11ea-89b3-b366503aafa4.png)
 
 12. 서버 뜬 화면 확인!
 
-![image-20200918235637678](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200918235637678.png)
+![뒤에서1](https://user-images.githubusercontent.com/69428620/93616268-7b66a780-fa0f-11ea-8067-492be804fff6.png)
+
 
 
 
