@@ -1,18 +1,22 @@
 ---
 layout: post
-title:  "django project과 mariadb 연동하기(1)"
+title:  "django project docker image에 올리기(1)"
 slug: django project + mariadb
 date:   2020-09-19 12:15:50 +0900
 description: 도커 실습(1)
-author: ok2qw66(yejin)
+author: yejin
 seo.type: BlogPosting
 categories: Docker
 
 ---
 
-# django project + mariadb 연동해서 docker image에 올리기
+# django project + mariadb 연동해서 docker image에 올리기(1)
+
+## maria db 연동하기 및 장고 프로젝트 기본 세팅
 
 
+
+### maria db 설치
 
 1. mariadb 이미지 파일 받기
 
@@ -64,56 +68,19 @@ categories: Docker
    276b09691217        mariadb:latest      "docker-entrypoint.s…"   4 seconds ago       Up 3 seconds        3306/tcp            mariadb
    ```
 
+   
+
 3. 컨테이너 접속해서 mariadb 생성되었는지 확인하기
 
-   (database 이름 : project / user : project  / pw : project)
+   (database 이름 : project_db / user : root  / pw : project)
 
    ```
+   # mariadb 컨테이너에 접속하기
+   vagrant@swarm-worker1:~$ docker exec -it mariadb /bin/bash
+   
    root@276b09691217:/# echo $MYSQL_ROOT_PASSWORD
    project
    root@276b09691217:/# mysql -u root -p
-   MariaDB [(none)]> use mysql;
-   MariaDB [mysql]> select host,user from user;
-   +-----------+-------------+
-   | Host      | User        |
-   +-----------+-------------+
-   | %         | root        |
-   | localhost | mariadb.sys |
-   | localhost | root        |
-   +-----------+-------------+
-   3 rows in set (0.001 sec)
-   
-   MariaDB [mysql]> grant all privileges on root.* to project@'172.17.0.2' identified by 'project';
-   Query OK, 0 rows affected (0.010 sec)
-   
-   MariaDB [mysql]> flush privileges;
-   Query OK, 0 rows affected (0.000 sec)
-   
-   MariaDB [(none)]> select host,user,password from mysql.user;
-   +------------+-------------+-------------------------------------------+
-   | Host       | User        | Password                                  |
-   +------------+-------------+-------------------------------------------+
-   | localhost  | mariadb.sys |                                           |
-   | localhost  | root        | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
-   | %          | root        | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
-   | 172.17.0.2 | project     | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
-   +------------+-------------+-------------------------------------------+
-   4 rows in set (0.001 sec)
-   
-   MariaDB [(none)]> grant all privileges on project.* to 'project'@'%';
-   Query OK, 0 rows affected (0.001 sec)
-   
-   MariaDB [(none)]> flush privileges;
-   Query OK, 0 rows affected (0.001 sec)
-   
-   MariaDB [(none)]> show grants for 'project'@'%';
-   ```
-
-   
-
-   ```
-   vagrant@swarm-worker1:~$ docker exec -it mariadb /bin/bash
-   root@276b09691217:/# mysql -p project
    Enter password: project
    Welcome to the MariaDB monitor.  Commands end with ; or \g.
    Your MariaDB connection id is 6
@@ -123,7 +90,7 @@ categories: Docker
    
    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
    
-   MariaDB [project]> show databases;
+   MariaDB [(none)]> show databases;
    +--------------------+
    | Database           |
    +--------------------+
@@ -134,19 +101,43 @@ categories: Docker
    +--------------------+
    4 rows in set (0.000 sec)
    
-   MariaDB [project]> use project_db;
-   Database changed
-   MariaDB [project]> show tables;
-   Empty set (0.001 sec)
+   MariaDB [(none)]> select host,user from user;
+   +-----------+-------------+
+   | Host      | User        |
+   +-----------+-------------+
+   | %         | root        |
+   | localhost | mariadb.sys |
+   | localhost | root        |
+   +-----------+-------------+
+   3 rows in set (0.001 sec)
    
-   MariaDB [project]> exit
-   Bye
-   root@276b09691217:/# exit
-   exit
-   vagrant@swarm-worker1:~$
+   # project db에 project 사용자가 외부에서 접속 가능하게 설정
+   MariaDB [(none)]> grant all privileges on project.* to 'project'@'%';
+   Query OK, 0 rows affected (0.001 sec)
+   
+   MariaDB [(none)]> flush privileges;
+   Query OK, 0 rows affected (0.001 sec)
+   
+   MariaDB [(none)]> select host,user,password from mysql.user;
+   +------------+-------------+-------------------------------------------+
+   | Host       | User        | Password                                  |
+   +------------+-------------+-------------------------------------------+
+   | localhost  | mariadb.sys |                                           |
+   | localhost  | root        | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
+   | %          | root        | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
+   | %          | project     | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
+   +------------+-------------+-------------------------------------------+
+   4 rows in set (0.001 sec)
+   
+   MariaDB [(none)]> show grants for 'project'@'%';
+   
    ```
 
-4.  python 이미지 불러오기
+
+
+### python 설치
+
+1. python 이미지 불러오기
 
    ```
    vagrant@swarm-worker1:~$ docker search python
@@ -179,7 +170,9 @@ categories: Docker
    python              latest              28a4c88cdbbf        7 days ago          882MB
    ```
 
-5. python container 만들기
+   
+
+2. python container 만들기
 
    ```
    vagrant@swarm-worker1:~$ docker run -t -d --name python \
@@ -195,7 +188,7 @@ categories: Docker
    276b09691217        mariadb:latest      "docker-entrypoint.s…"   30 minutes ago      Up 30 minutes       3306/tcp                                         mariadb
    ```
 
-6.  python 컨테이너에서 파이썬,볼륨,mariadb 연결 확인 및 third party 설치
+3. python 컨테이너에서 파이썬,볼륨,mariadb 연결 확인 및 third party 설치
 
    ```
    vagrant@swarm-worker1:~$ docker exec -it python /bin/bash
@@ -283,25 +276,23 @@ categories: Docker
 
      
 
-7.  장고 프로젝트 파일  컨테이너 안에 옮기기 (왼쪽 하단의 upload 버튼 누르기)
+4. 장고 프로젝트 파일  컨테이너 안에 옮기기 (왼쪽 하단의 upload 버튼 누르기)
 
    ![뒤에서5](https://user-images.githubusercontent.com/69428620/93616330-920cfe80-fa0f-11ea-974c-33e5cfdc541d.png)
 
-```
-root@98773843bb34:~# cd /home/django_playlist/
-root@98773843bb34:/home/django_playlist# ls
-README.md  django_src  manage.py  plist  requirements.txt  venv
-```
+   ```
+   root@98773843bb34:~# cd /home/django_playlist/
+   root@98773843bb34:/home/django_playlist# ls
+   README.md  django_src  manage.py  plist  requirements.txt  venv
+   ```
 
->  **vi 명령어가 안 먹힘... 고로 설치해야 함**
->
-> ```
-> root@98773843bb34:~# apt-get install vim
-> ```
->
-> 
+   > **vi 명령어가 안 먹힘... 고로 설치해야 함**
+   >
+   > ```
+   > root@98773843bb34:~# apt-get install vim
+   > ```
 
-8. settings.py 파일에서 mariadb로 연결 변경하기
+5. settings.py 파일에서 mariadb로 연결 변경하기
 
    ```
    root@98773843bb34:/home/django_playlist# vi django_src/settings.py
@@ -309,87 +300,94 @@ README.md  django_src  manage.py  plist  requirements.txt  venv
 
    ![뒤에서3](https://user-images.githubusercontent.com/69428620/93616324-90dbd180-fa0f-11ea-9e08-63ef594fbe3d.png)
 
-9. requirements.txt에 설치목록 설치하기
+   > mariadb ip 확인(172.17.0.2) 하고 settings.py 에 해당 ip입력하기
+
+   
+
+6. requirements.txt에 설치목록 설치하기
 
    ```
    root@98773843bb34:/home/django_playlist# pip install -r requirements.txt
    ```
 
-10.  migrate 하기
+7. migrate 하기
 
-    ```
-    root@98773843bb34:/home/django_playlist# python manage.py migrate
-    /usr/local/lib/python3.8/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
-      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
-    Operations to perform:
-      Apply all migrations: admin, auth, contenttypes, plist, sessions
-    Running migrations:
-      Applying contenttypes.0001_initial... OK
-      Applying auth.0001_initial... OK
-      Applying admin.0001_initial... OK
-      Applying admin.0002_logentry_remove_auto_add... OK
-      :
-      
-    root@98773843bb34:/home/django_playlist# python manage.py showmigrations plist
-    /usr/local/lib/python3.8/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
-      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
-    plist
-     [X] 0001_initial
-     [X] 0002_auto_20200914_2100
-     [X] 0003_auto_20200914_2129
-    ```
+   ```
+   root@98773843bb34:/home/django_playlist# python manage.py migrate
+   /usr/local/lib/python3.8/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+     warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+   Operations to perform:
+     Apply all migrations: admin, auth, contenttypes, plist, sessions
+   Running migrations:
+     Applying contenttypes.0001_initial... OK
+     Applying auth.0001_initial... OK
+     Applying admin.0001_initial... OK
+     Applying admin.0002_logentry_remove_auto_add... OK
+     :
+     
+   root@98773843bb34:/home/django_playlist# python manage.py showmigrations plist
+   /usr/local/lib/python3.8/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+     warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+   plist
+    [X] 0001_initial
+    [X] 0002_auto_20200914_2100
+    [X] 0003_auto_20200914_2129
+   ```
 
-11.  서버 띄우기
+8. 서버 띄우기
 
-    ```
-    root@98773843bb34:/home/django_playlist# python manage.py runserver 0.0.0.0:8000
-    Watching for file changes with StatReloader
-    Performing system checks...
-    
-    /usr/local/lib/python3.8/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
-      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
-    System check identified no issues (0 silenced).
-    September 18, 2020 - 23:48:04
-    Django version 3.1, using settings 'django_src.settings'
-    Starting development server at http://0.0.0.0:8000/
-    Quit the server with CONTROL-C.
-    ```
-![뒤에서2](https://user-images.githubusercontent.com/69428620/93616318-8f120e00-fa0f-11ea-89b3-b366503aafa4.png)
+   ```
+   root@98773843bb34:/home/django_playlist# python manage.py runserver 0.0.0.0:8000
+   Watching for file changes with StatReloader
+   Performing system checks...
+   
+   /usr/local/lib/python3.8/site-packages/pydub/utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+     warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+   System check identified no issues (0 silenced).
+   September 18, 2020 - 23:48:04
+   Django version 3.1, using settings 'django_src.settings'
+   Starting development server at http://0.0.0.0:8000/
+   Quit the server with CONTROL-C.
+   ```
 
-12. 서버 뜬 화면 확인!
+   ![뒤에서2](https://user-images.githubusercontent.com/69428620/93616318-8f120e00-fa0f-11ea-89b3-b366503aafa4.png)
 
-![뒤에서1](https://user-images.githubusercontent.com/69428620/93616268-7b66a780-fa0f-11ea-8067-492be804fff6.png)
+   > **포트 포워딩을 해줘야 HOST PC에서 접속 가능함**
+
+   
+
+9. 서버 뜬 화면 확인!
+
+   ![뒤에서1](https://user-images.githubusercontent.com/69428620/93616268-7b66a780-fa0f-11ea-8067-492be804fff6.png)
 
 
 
 
 
 
-**참고자료**
+
+### 참고 사이트
 
 - db 사용자 계정 생성/권한
 
-https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
-
-https://www.codingfactory.net/11336
-
-https://serverfault.com/questions/793058/can-not-access-mysql-docker
+  [https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit]: https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
+  [https://www.codingfactory.net/11336]: https://www.codingfactory.net/11336
+  [https://serverfault.com/questions/793058/can-not-access-mysql-docker]: https://serverfault.com/questions/793058/can-not-access-mysql-docker
 
 - 장고 docker에 올리기
 
-https://devyurim.github.io/development%20environment/docker/2018/08/09/docker-2.html
+  [https://devyurim.github.io/development%20environment/docker/2018/08/09/docker-2.html]: https://devyurim.github.io/development%20environment/docker/2018/08/09/docker-2.html
+  [https://www.daleseo.com/docker-compose-django/]: https://www.daleseo.com/docker-compose-django/
 
-https://www.daleseo.com/docker-compose-django/
-
-
-
+  
 
 
 
 
 
 
-# 에러뜸
+
+### 해결해야 할일..
 
 1. elastic-search 컨테이너도 만들어서 묶어야함..
 2. ffmpeg 없어서 노래 슬라이스가 안됨 ==> 리눅스 서버에 설치필요
