@@ -198,13 +198,20 @@ During handling of the above exception, another exception occurred:
    vagrant@swarm-worker1:~$ docker exec -it mariadb /bin/bash
    ```
 
-2. vi 편집 가능하도록 vim 설치
+2. apt-get update 및 upgrade 하기
+
+   ```
+   root@98773843bb34:/# apt-get update
+   root@98773843bb34:/# apt-get upgrade
+   ```
+
+3. vi 편집 가능하도록 vim 설치
 
    ```
    root@98773843bb34:~# apt-get install -y vim
    ```
 
-3. mariadb 한글로 설정파일 변경
+4. mariadb 한글로 설정파일 변경
 
    ```
    root@276b09691217:~# cd /etc/mysql/
@@ -212,16 +219,41 @@ During handling of the above exception, another exception occurred:
    root@276b09691217:/etc/mysql# ls
    conf.d        debian.cnf   mariadb.conf.d  my.cnf.ori
    debian-start  mariadb.cnf  my.cnf
-   root@276b09691217:/etc/mysql# vi my.cnf
+   root@276b09691217:/etc/mysql# cat my.cnf
    ```
 
-4. mariadb 재시작
+   ```
+   [client-server]
+   # Port or socket location where to connect
+   # port = 3306
+   socket = /run/mysqld/mysqld.sock
+   
+   # Import all .cnf files from configuration directory
+   !includedir /etc/mysql/conf.d/
+   !includedir /etc/mysql/mariadb.conf.d/
+   
+   [client]
+   default-character-set = utf8mb4
+   
+   [mysql]
+   default-character-set = utf8mb4
+   
+   [mysqld]
+   collation-server = utf8_unicode_ci
+   init-connect='SET NAMES utf8'
+   character-set-server = utf8
+   ```
+
+   
+
+5. maria 컨테이너 재시작
 
    ```
-   root@276b09691217:/etc/mysql# service mariadb restart
+   vagrant@swarm-worker1:~$ docker restart mariadb
+   vagrant@swarm-worker1:~$ docker exec -it mariadb /bin/bash
    ```
 
-5. 한글 설정 확인하기
+6. 한글 설정 확인하기
 
    ```
    root@276b09691217:/etc/mysql# mysql -u root -p
@@ -230,18 +262,18 @@ During handling of the above exception, another exception occurred:
    +----------------------------------+----------------------------+
    | Variable_name                    | Value                      |
    +----------------------------------+----------------------------+
-   | character_set_client             | utf8                       |
-   | character_set_connection         | utf8                       |
-   | character_set_database           | utf8mb4                    |
+   | character_set_client             | utf8mb4                    |
+   | character_set_connection         | utf8mb4                    |
+   | character_set_database           | utf8                       |
    | character_set_filesystem         | binary                     |
-   | character_set_results            | utf8                       |
-   | character_set_server             | utf8mb4                    |
+   | character_set_results            | utf8mb4                    |
+   | character_set_server             | utf8                       |
    | character_set_system             | utf8                       |
    | character_sets_dir               | /usr/share/mysql/charsets/ |
    | check_constraint_checks          | ON                         |
-   | collation_connection             | utf8_general_ci            |
-   | collation_database               | utf8mb4_general_ci         |
-   | collation_server                 | utf8mb4_general_ci         |
+   | collation_connection             | utf8mb4_general_ci         |
+   | collation_database               | utf8_unicode_ci            |
+   | collation_server                 | utf8_unicode_ci            |
    | column_compression_threshold     | 100                        |
    | column_compression_zlib_level    | 6                          |
    | column_compression_zlib_strategy | DEFAULT_STRATEGY           |
@@ -264,7 +296,7 @@ During handling of the above exception, another exception occurred:
 
 - mariadb 한글 설정해주기
 
-  [https://wingsnote.com/21]: https://wingsnote.com/21
+  [https://velog.io/@hongji3354/Docker%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-MariaDB-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0]: https://velog.io/@hongji3354/Docker%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-MariaDB-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
 - ffmpeg로 mp3 파일 수정하기
 

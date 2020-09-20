@@ -48,14 +48,14 @@ categories: Docker
 
    
 
-2. mariadb 컨테이너 생성
+2. mariadb 컨테이너 생성 (미리 /home/vagrant/mariadb 폴더 생성해놓기)
 
    ```
    vagrant@swarm-worker1:~/datadir$ pwd
    /home/vagrant/datadir
    vagrant@swarm-worker1:~/datadir$ cd ~
    vagrant@swarm-worker1:~$ docker run --name mariadb \
-   > -v /home/vagrant/datadir:/home/mariadb/DB \
+   > -v /home/vagrant/mariadb:/home/mariadb \
    > -e MYSQL_ROOT_PASSWORD='project' \
    > -e MYSQL_DATABASE=project_db \
    > -d mariadb:latest
@@ -72,14 +72,38 @@ categories: Docker
 
 3. 컨테이너 접속해서 mariadb 생성되었는지 확인하기
 
-   (database 이름 : project_db / user : root  / pw : project)
-
    ```
-   # mariadb 컨테이너에 접속하기
+# mariadb 컨테이너에 접속하기
    vagrant@swarm-worker1:~$ docker exec -it mariadb /bin/bash
    
    root@276b09691217:/# echo $MYSQL_ROOT_PASSWORD
    project
+   ```
+   
+4. /etc/mysql 폴더를 /home/mariadb/mysql 과 soft link(symbolic link) 걸기
+
+   **원본 파일이 밖에는 없어서 의미가 없음....**
+
+   ```
+   root@09b89dd518c0:~# ln -s /etc/mysql/ /home/mariadb/
+   root@09b89dd518c0:~# cd /home/mariadb/
+   root@09b89dd518c0:/home/mariadb# ls
+   mysql
+   root@09b89dd518c0:/home/mariadb# ls -l
+   total 0
+   lrwxrwxrwx 1 root root 11 Sep 20 16:17 mysql -> /etc/mysql/
+   root@09b89dd518c0:/home/mariadb# cd mysql
+   root@09b89dd518c0:/home/mariadb/mysql# ls
+   conf.d  debian-start  debian.cnf  mariadb.cnf  mariadb.conf.d  my.cnf
+   ```
+
+   
+
+5. root 계정으로 mairadb 접속해서 project 계정만들기
+
+   (database 이름 : project_db / user : root  / pw : project)
+
+   ```
    root@276b09691217:/# mysql -u root -p
    Enter password: project
    Welcome to the MariaDB monitor.  Commands end with ; or \g.
@@ -101,7 +125,12 @@ categories: Docker
    +--------------------+
    4 rows in set (0.000 sec)
    
-   MariaDB [(none)]> select host,user from user;
+   MariaDB [(none)]> use mysql;
+   Reading table information for completion of table and column names
+   You can turn off this feature to get a quicker startup with -A
+   
+   Database changed
+   MariaDB [mysql]> select host,user from user;
    +-----------+-------------+
    | Host      | User        |
    +-----------+-------------+
@@ -111,27 +140,69 @@ categories: Docker
    +-----------+-------------+
    3 rows in set (0.001 sec)
    
-   # project db에 project 사용자가 외부에서 접속 가능하게 설정
-   MariaDB [(none)]> grant all privileges on project.* to 'project'@'%';
+   #project 계정 생성
+   MariaDB [(none)]> create user 'project'@'%' identified by 'project';
+   Query OK, 0 rows affected (0.001 sec)
+   
+   # project db에 대한 모든 권한을 project 계정에게 주기
+   MariaDB [(none)]> grant all privileges on project_db.* to 'project'@'%';
    Query OK, 0 rows affected (0.001 sec)
    
    MariaDB [(none)]> flush privileges;
    Query OK, 0 rows affected (0.001 sec)
    
-   MariaDB [(none)]> select host,user,password from mysql.user;
-   +------------+-------------+-------------------------------------------+
-   | Host       | User        | Password                                  |
-   +------------+-------------+-------------------------------------------+
-   | localhost  | mariadb.sys |                                           |
-   | localhost  | root        | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
-   | %          | root        | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
-   | %          | project     | *FD0B2F9649853705D5A8A1D84AEA4B57B9590B23 |
-   +------------+-------------+-------------------------------------------+
+   MariaDB [(none)]> select host,user from mysql.user;
+   +-----------+-------------+
+   | Host      | User        |
+   +-----------+-------------+
+   | %         | project     |
+   | %         | root        |
+   | localhost | mariadb.sys |
+   | localhost | root        |
+   +-----------+-------------+
    4 rows in set (0.001 sec)
    
    MariaDB [(none)]> show grants for 'project'@'%';
-   
+   +---------------------------------------------------------------------------------+
+   | Grants for project@%                                                            |
+   +---------------------------------------------------------------------------------+
+   | GRANT USAGE ON *.* TO `project`@`%` IDENTIFIED BY PASSWORD '*FD0B2F9649853705D5A8A1D84AEA4B57B9590B23' |
+   | GRANT ALL PRIVILEGES ON `project_db`.* TO `project`@`%`                         |
+   +---------------------------------------------------------------------------------+
+   2 rows in set (0.000 sec)
    ```
+
+   
+
+6. project 계정으로 mariadb 접속하기
+
+   ```
+   root@09b89dd518c0:~# mysql -u project -p
+   Enter password:
+   Welcome to the MariaDB monitor.  Commands end with ; or \g.
+   Your MariaDB connection id is 5
+   Server version: 10.5.5-MariaDB-1:10.5.5+maria~focal mariadb.org binary distribution
+   
+   Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+   
+   Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+   
+   MariaDB [(none)]> show databases;
+   +--------------------+
+   | Database           |
+   +--------------------+
+   | information_schema |
+   | project_db         |
+   +--------------------+
+   2 rows in set (0.000 sec)
+   
+   MariaDB [(none)]> use project_db;
+   Database changed
+   MariaDB [project_db]> show tables;
+   Empty set (0.000 sec)
+   ```
+
+   
 
 
 
@@ -371,8 +442,15 @@ categories: Docker
 - db 사용자 계정 생성/권한
 
   [https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit]: https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
+  [https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit]: https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
   [https://www.codingfactory.net/11336]: https://www.codingfactory.net/11336
   [https://serverfault.com/questions/793058/can-not-access-mysql-docker]: https://serverfault.com/questions/793058/can-not-access-mysql-docker
+
+- symbolic link 달기
+
+  [https://4urdev.tistory.com/49]: https://4urdev.tistory.com/49
+
+  
 
 - 장고 docker에 올리기
 
