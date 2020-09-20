@@ -65,7 +65,7 @@ categories: Docker
 
 3.  도커허브 페이지에 접속해서 이미지 업로드 확인
 
-   ![image-20200921000219789](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200921000219789.png)
+   ![image-20200921000219789](https://user-images.githubusercontent.com/69428620/93718652-8f99d880-fbb8-11ea-9a11-1f02b09ed435.png)
 
 
 
@@ -235,7 +235,7 @@ categories: Docker
 
 3.  sftp로 /home/vagrant/django_playlist 에 프로젝트 폴더내용 넣기
 
-   ![image-20200921025132230](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200921025132230.png)
+   ![image-20200921025132230](https://user-images.githubusercontent.com/69428620/93718647-8577da00-fbb8-11ea-84d3-172eb7885c88.png)
 
 4. 프로젝트 실행하기
 
@@ -243,8 +243,8 @@ categories: Docker
    root@ac54a83c913b:/home/django_playlist# python manage.py migrate
    root@ac54a83c913b:/home/django_playlist# python manage.py runserver 0.0.0.0:8000
    ```
-
-   ![image-20200921025903403](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200921025903403.png)
+   
+   ![image-20200921025903403](https://user-images.githubusercontent.com/69428620/93718633-76912780-fbb8-11ea-9958-7998d6b2dbf9.png)
 
 
 
