@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "django project docker image에 올리기(1)"
-slug: django project + mariadb
+slug: docker/django/mariadb+python
 date:   2020-09-19 12:15:50 +0900
 description: 도커 실습(1)
 author: yejin
@@ -73,84 +73,82 @@ categories: Docker
 3. 컨테이너 접속해서 mariadb 생성되었는지 확인하기
 
    ```
-# mariadb 컨테이너에 접속하기
    vagrant@swarm-worker1:~$ docker exec -it mariadb /bin/bash
    
    root@276b09691217:/# echo $MYSQL_ROOT_PASSWORD
    project
    ```
-   
-4. /etc/mysql 폴더를 /home/mariadb/mysql 과 soft link(symbolic link) 걸기
+
+  4. /etc/mysql 폴더를 /home/mariadb/mysql 과 soft link(symbolic link) 걸기
 
    **원본 파일이 밖에는 없어서 의미가 없음....**
 
    ```
-   root@09b89dd518c0:~# ln -s /etc/mysql/ /home/mariadb/
-   root@09b89dd518c0:~# cd /home/mariadb/
-   root@09b89dd518c0:/home/mariadb# ls
-   mysql
-   root@09b89dd518c0:/home/mariadb# ls -l
-   total 0
-   lrwxrwxrwx 1 root root 11 Sep 20 16:17 mysql -> /etc/mysql/
-   root@09b89dd518c0:/home/mariadb# cd mysql
-   root@09b89dd518c0:/home/mariadb/mysql# ls
-   conf.d  debian-start  debian.cnf  mariadb.cnf  mariadb.conf.d  my.cnf
+root@09b89dd518c0:~# ln -s /etc/mysql/ /home/mariadb/
+root@09b89dd518c0:~# cd /home/mariadb/
+root@09b89dd518c0:/home/mariadb# ls
+mysql
+root@09b89dd518c0:/home/mariadb# ls -l
+total 0
+lrwxrwxrwx 1 root root 11 Sep 20 16:17 mysql -> /etc/mysql/
+root@09b89dd518c0:/home/mariadb# cd mysql
+root@09b89dd518c0:/home/mariadb/mysql# ls
+conf.d  debian-start  debian.cnf  mariadb.cnf  mariadb.conf.d  my.cnf
    ```
-
-   
-
-5. root 계정으로 mairadb 접속해서 project 계정만들기
+ 5. root 계정으로 mairadb 접속해서 project 계정만들기
 
    (database 이름 : project_db / user : root  / pw : project)
 
    ```
-   root@276b09691217:/# mysql -u root -p
-   Enter password: project
-   Welcome to the MariaDB monitor.  Commands end with ; or \g.
-   Your MariaDB connection id is 6
-   Server version: 10.5.5-MariaDB-1:10.5.5+maria~focal mariadb.org binary distribution
-   
-   Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-   
-   Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-   
-   MariaDB [(none)]> show databases;
-   +--------------------+
-   | Database           |
-   +--------------------+
-   | information_schema |
-   | mysql              |
-   | performance_schema |
-   | project_db         |
-   +--------------------+
-   4 rows in set (0.000 sec)
-   
-   MariaDB [(none)]> use mysql;
-   Reading table information for completion of table and column names
-   You can turn off this feature to get a quicker startup with -A
-   
-   Database changed
-   MariaDB [mysql]> select host,user from user;
-   +-----------+-------------+
-   | Host      | User        |
-   +-----------+-------------+
-   | %         | root        |
-   | localhost | mariadb.sys |
-   | localhost | root        |
-   +-----------+-------------+
-   3 rows in set (0.001 sec)
-   
-   #project 계정 생성
-   MariaDB [(none)]> create user 'project'@'%' identified by 'project';
+root@276b09691217:/# mysql -u root -p
+Enter password: project
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 6
+Server version: 10.5.5-MariaDB-1:10.5.5+maria~focal mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| project_db         |
++--------------------+
+4 rows in set (0.000 sec)
+
+MariaDB [(none)]> use mysql;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [mysql]> select host,user from user;
++-----------+-------------+
+| Host      | User        |
++-----------+-------------+
+| %         | root        |
+| localhost | mariadb.sys |
+| localhost | root        |
++-----------+-------------+
+3 rows in set (0.001 sec)
+
+#project 계정 생성
+MariaDB [(none)]> create user 'project'@'%' identified by 'project';
+Query OK, 0 rows affected (0.001 sec)
+   ```
+- project db에 대한 모든 권한을 project 계정에게 주기
+
+```
+MariaDB [(none)]> grant all privileges on project_db.* to 'project'@'%';
    Query OK, 0 rows affected (0.001 sec)
-   
-   # project db에 대한 모든 권한을 project 계정에게 주기
-   MariaDB [(none)]> grant all privileges on project_db.* to 'project'@'%';
-   Query OK, 0 rows affected (0.001 sec)
-   
+
    MariaDB [(none)]> flush privileges;
    Query OK, 0 rows affected (0.001 sec)
-   
+
    MariaDB [(none)]> select host,user from mysql.user;
    +-----------+-------------+
    | Host      | User        |
@@ -161,7 +159,7 @@ categories: Docker
    | localhost | root        |
    +-----------+-------------+
    4 rows in set (0.001 sec)
-   
+
    MariaDB [(none)]> show grants for 'project'@'%';
    +---------------------------------------------------------------------------------+
    | Grants for project@%                                                            |
@@ -170,39 +168,38 @@ categories: Docker
    | GRANT ALL PRIVILEGES ON `project_db`.* TO `project`@`%`                         |
    +---------------------------------------------------------------------------------+
    2 rows in set (0.000 sec)
-   ```
-
-   
+```
 
 6. project 계정으로 mariadb 접속하기
 
    ```
-   root@09b89dd518c0:~# mysql -u project -p
-   Enter password:
-   Welcome to the MariaDB monitor.  Commands end with ; or \g.
-   Your MariaDB connection id is 5
-   Server version: 10.5.5-MariaDB-1:10.5.5+maria~focal mariadb.org binary distribution
-   
-   Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
-   
-   Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-   
-   MariaDB [(none)]> show databases;
-   +--------------------+
-   | Database           |
-   +--------------------+
-   | information_schema |
-   | project_db         |
-   +--------------------+
-   2 rows in set (0.000 sec)
-   
-   MariaDB [(none)]> use project_db;
-   Database changed
-   MariaDB [project_db]> show tables;
-   Empty set (0.000 sec)
+root@09b89dd518c0:~# mysql -u project -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 5
+Server version: 10.5.5-MariaDB-1:10.5.5+maria~focal mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| project_db         |
++--------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [(none)]> use project_db;
+Database changed
+MariaDB [project_db]> show tables;
+Empty set (0.000 sec)
    ```
 
-   
+
+
 
 
 
@@ -211,86 +208,80 @@ categories: Docker
 1. python 이미지 불러오기
 
    ```
-   vagrant@swarm-worker1:~$ docker search python
-   NAME             DESCRIPTION         STARS               OFFICIAL            AUTOMATED
-   python    Python is an interpreted, interactive, objec…   5491                [OK]
-   django    Django is a free web application framework, …   994                 [OK]
+vagrant@swarm-worker1:~$ docker search python
+NAME             DESCRIPTION         STARS               OFFICIAL            AUTOMATED
+python    Python is an interpreted, interactive, objec…   5491                [OK]
+django    Django is a free web application framework, …   994                 [OK]
    ```
-
    ```
-   vagrant@swarm-worker1:~$ docker pull python
-   Using default tag: latest
-   latest: Pulling from library/python
-   57df1a1f1ad8: Pull complete
-   71e126169501: Pull complete
-   1af28a55c3f3: Pull complete
-   03f1c9932170: Pull complete
-   65b3db15f518: Pull complete
-   3e3b8947ed83: Pull complete
-   a4850b8bdbb7: Pull complete
-   416533994968: Pull complete
-   1b580f9ce4ce: Pull complete
-   Digest: sha256:e9b7e3b4e9569808066c5901b8a9ad315a9f14ae8d3949ece22ae339fff2cad0
-   Status: Downloaded newer image for python:latest
-   docker.io/library/python:latest
+vagrant@swarm-worker1:~$ docker pull python
+Using default tag: latest
+latest: Pulling from library/python
+57df1a1f1ad8: Pull complete
+71e126169501: Pull complete
+1af28a55c3f3: Pull complete
+03f1c9932170: Pull complete
+65b3db15f518: Pull complete
+3e3b8947ed83: Pull complete
+a4850b8bdbb7: Pull complete
+416533994968: Pull complete
+1b580f9ce4ce: Pull complete
+Digest: sha256:e9b7e3b4e9569808066c5901b8a9ad315a9f14ae8d3949ece22ae339fff2cad0
+Status: Downloaded newer image for python:latest
+docker.io/library/python:latest
    ```
-
    ```
-   vagrant@swarm-worker1:~$ docker image ls python
-   REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-   python              latest              28a4c88cdbbf        7 days ago          882MB
+vagrant@swarm-worker1:~$ docker image ls python
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+python              latest              28a4c88cdbbf        7 days ago          882MB
    ```
-
-   
-
 2. python container 만들기
 
    ```
-   vagrant@swarm-worker1:~$ docker run -t -d --name python \
-   --link mariadb \
-   -v /home/vagrant/django_playlist/:/home/django_playlist \
-   -p 8000:8000 -p 3306:3306 \
-   python:latest
-   98773843bb3468eefe48a7a4166ea425312502c40cd7e31026f477a5295a1e21
-   
-   vagrant@swarm-worker1:~$ docker container ls
-   CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-   98773843bb34        python:latest       "python3"                3 seconds ago       Up 3 seconds        0.0.0.0:3306->3306/tcp, 0.0.0.0:8000->8000/tcp   python
-   276b09691217        mariadb:latest      "docker-entrypoint.s…"   30 minutes ago      Up 30 minutes       3306/tcp                                         mariadb
+vagrant@swarm-worker1:~$ docker run -t -d --name python \
+--link mariadb \
+-v /home/vagrant/django_playlist/:/home/django_playlist \
+-p 8000:8000 -p 3306:3306 \
+python:latest
+98773843bb3468eefe48a7a4166ea425312502c40cd7e31026f477a5295a1e21
+
+vagrant@swarm-worker1:~$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+98773843bb34        python:latest       "python3"                3 seconds ago       Up 3 seconds        0.0.0.0:3306->3306/tcp, 0.0.0.0:8000->8000/tcp   python
+276b09691217        mariadb:latest      "docker-entrypoint.s…"   30 minutes ago      Up 30 minutes       3306/tcp                                         mariadb
    ```
+
+
 
 3. python 컨테이너에서 파이썬,볼륨,mariadb 연결 확인 및 third party 설치
 
    ```
-   vagrant@swarm-worker1:~$ docker exec -it python /bin/bash
-   root@98773843bb34:/# python --version
-   Python 3.8.5
-   root@98773843bb34:/# ls /home/
-   django_playlist
+vagrant@swarm-worker1:~$ docker exec -it python /bin/bash
+root@98773843bb34:/# python --version
+Python 3.8.5
+root@98773843bb34:/# ls /home/
+django_playlist
    ```
+- 장고 설치 및 확인
 
-   - 장고 설치 및 확인
+    root@98773843bb34:/# pip install django
+    Collecting django
+    Downloading Django-3.1.1-py3-none-any.whl (7.8 MB)
+    |████████████████████████████████| 7.8 MB 1.6 MB/s
 
-     ```
-     root@98773843bb34:/# pip install django
-     Collecting django
-       Downloading Django-3.1.1-py3-none-any.whl (7.8 MB)
-          |████████████████████████████████| 7.8 MB 1.6 MB/s
-     ```
-
-     ```
-     root@98773843bb34:/# pip show django
-     Name: Django
-     Version: 3.1.1
-     Summary: A high-level Python Web framework that encourages rapid development and clean, pragmatic design.
-     Home-page: https://www.djangoproject.com/
-     Author: Django Software Foundation
-     Author-email: foundation@djangoproject.com
-     License: BSD-3-Clause
-     Location: /usr/local/lib/python3.8/site-packages
-     Requires: sqlparse, asgiref, pytz
-     Required-by:
-     ```
+```
+ root@98773843bb34:/# pip show django
+ Name: Django
+ Version: 3.1.1
+ Summary: A high-level Python Web framework that encourages rapid development and clean, pragmatic design.
+ Home-page: https://www.djangoproject.com/
+ Author: Django Software Foundation
+ Author-email: foundation@djangoproject.com
+ License: BSD-3-Clause
+ Location: /usr/local/lib/python3.8/site-packages
+ Requires: sqlparse, asgiref, pytz
+ Required-by:
+```
 
    - apt-get update 및 upgrade하기
 
