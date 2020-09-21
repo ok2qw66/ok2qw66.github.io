@@ -434,21 +434,30 @@ categories: Docker
 
 - db 사용자 계정 생성/권한
 
-  [https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit]: https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
-  [https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit]: https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
-  [https://www.codingfactory.net/11336]: https://www.codingfactory.net/11336
-  [https://serverfault.com/questions/793058/can-not-access-mysql-docker]: https://serverfault.com/questions/793058/can-not-access-mysql-docker
+  1) https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
+  
+  
+  2) https://velog.io/@max9106/MySQL-%EC%9C%A0%EC%A0%80-%EC%83%9D%EC%84%B1-sgk5cplhit
+  
+  
+  3) https://www.codingfactory.net/11336
+  
+  
+  4) https://serverfault.com/questions/793058/can-not-access-mysql-docker
+
+
 
 - symbolic link 달기
 
-  [https://4urdev.tistory.com/49]: https://4urdev.tistory.com/49
+  1) https://4urdev.tistory.com/49
 
   
 
 - 장고 docker에 올리기
 
-  [https://devyurim.github.io/development%20environment/docker/2018/08/09/docker-2.html]: https://devyurim.github.io/development%20environment/docker/2018/08/09/docker-2.html
-  [https://www.daleseo.com/docker-compose-django/]: https://www.daleseo.com/docker-compose-django/
+  1) https://devyurim.github.io/development%20environment/docker/2018/08/09/docker-2.html
+  
+  2) https://www.daleseo.com/docker-compose-django/
 
   
 
