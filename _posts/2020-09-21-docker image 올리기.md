@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "django project docker image에 올리기(3)"
-slug: django project + mariadb
+slug: django/mariadb/docker_image
 date:   2020-09-21 02:56:50 +0900
 description: 도커 실습(1)
 author: yejin
