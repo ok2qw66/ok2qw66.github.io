@@ -98,7 +98,7 @@ During handling of the above exception, another exception occurred:
 
 #### ffmpeg로 mp3 파일 수정하기
 
-> **ffmpeg 의 단점 : **
+> ffmpeg 의 단점 : 
 >
 > 1) file overwrite가 안된다
 >
@@ -296,14 +296,16 @@ During handling of the above exception, another exception occurred:
 
 - mariadb 한글 설정해주기
 
-  [https://velog.io/@hongji3354/Docker%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-MariaDB-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0]: https://velog.io/@hongji3354/Docker%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-MariaDB-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
+   1) https://velog.io/@hongji3354/Docker%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-MariaDB-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
+ 
 - ffmpeg로 mp3 파일 수정하기
 
-  [https://enfanthoon.tistory.com/109]: https://enfanthoon.tistory.com/109
-  [https://www.winhelponline.com/blog/split-video-audio-multiple-parts-equal/]: https://www.winhelponline.com/blog/split-video-audio-multiple-parts-equal/
-  [https://www.tecmint.com/install-ffmpeg-in-linux/]: https://www.tecmint.com/install-ffmpeg-in-linux/
-  
+   1) https://enfanthoon.tistory.com/109
+   
+   2) https://www.winhelponline.com/blog/split-video-audio-multiple-parts-equal/
+   
+   3) https://www.tecmint.com/install-ffmpeg-in-linux/
   
 
 

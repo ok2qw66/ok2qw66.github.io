@@ -73,16 +73,18 @@ categories: Docker
 
 ### 다른 서버에서 이미지 파일 다운받아서 프로젝트 실행해보기
 
+> 1.0 버전에 미포함된 부분이 있어서 1.1 이미지파일 받아서 테스트 진행하겠습니다
+
 1. plist 이미지 가져오기
 
    ```
-   vagrant@swarm-worker2:~$ docker image pull ok2qw66/plist:1.0
+   vagrant@swarm-worker2:~$ docker image pull ok2qw66/plist:1.1
    ```
 
 2. plist_mariadb 이미지 가져오기
 
    ```
-   vagrant@swarm-worker2:~$ docker image pull ok2qw66/plist_mariadb:1.0
+   vagrant@swarm-worker2:~$ docker image pull ok2qw66/plist_mariadb:1.1
    ```
 
 3. image 확인
@@ -90,8 +92,8 @@ categories: Docker
    ```
    vagrant@swarm-worker2:~$ docker image ls
    REPOSITORY              TAG         IMAGE ID            CREATED             SIZE
-   ok2qw66/plist_mariadb   1.0         5dbd83374ac1        2 hours ago         492MB
-   ok2qw66/plist           1.0         223da4820311        2 hours ago         1.24GB
+   ok2qw66/plist_mariadb   1.1         5dbd83374ac1        2 hours ago         492MB
+   ok2qw66/plist           1.1         223da4820311        2 hours ago         1.24GB
    ```
 
 
@@ -224,7 +226,7 @@ categories: Docker
    drwxr-xr-x 1 root root 4096 Sep 18 13:18 ..
    ```
 
-   ===> volume 내용은 같이 복사가 안되나보다....
+   ===> volume 내용은 같이 복사가 안된다 ==> 따로 추가
 
 2.  plist 컨테이너 멈추기
 
@@ -237,9 +239,16 @@ categories: Docker
 
    ![image-20200921025132230](https://user-images.githubusercontent.com/69428620/93718647-8577da00-fbb8-11ea-84d3-172eb7885c88.png)
 
-4. 프로젝트 실행하기
+4.  plist 컨테이너 멈추기
 
    ```
+   vagrant@swarm-worker2:~$ docker container start plist
+   ```
+
+5. 프로젝트 실행하기
+
+   ```
+   root@ac54a83c913b~# cd /home/django_playlist
    root@ac54a83c913b:/home/django_playlist# python manage.py migrate
    root@ac54a83c913b:/home/django_playlist# python manage.py runserver 0.0.0.0:8000
    ```
@@ -264,8 +273,7 @@ categories: Docker
 
 - 이미 실행중인 plist컨테이너에 볼륨 추가하기
 
-  [https://medium.com/sjk5766/%EC%8B%A4%ED%96%89%EC%A4%91%EC%9D%B8-container%EC%97%90-port-or-volume-%EC%B6%94%EA%B0%80-ae8889344c68]: https://medium.com/sjk5766/%EC%8B%A4%ED%96%89%EC%A4%91%EC%9D%B8-container%EC%97%90-port-or-volume-%EC%B6%94%EA%B0%80-ae8889344c68
-
+  1) https://medium.com/sjk5766/%EC%8B%A4%ED%96%89%EC%A4%91%EC%9D%B8-container%EC%97%90-port-or-volume-%EC%B6%94%EA%B0%80-ae8889344c68
 
 
 
