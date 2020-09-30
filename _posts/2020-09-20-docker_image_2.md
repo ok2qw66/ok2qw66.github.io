@@ -1,8 +1,6 @@
 ---
 title:  "django project docker image에 올리기(2)"
 date:   2020-09-20 01:16:50 +0900
-description: 도커 실습(1)
-author: yejin
 categories: 
   - Docker
   - ffmpeg
