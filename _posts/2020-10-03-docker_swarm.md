@@ -11,7 +11,8 @@ tags:
 
 # docker swarm
 
-![image-20200916160916888](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200916160916888.png)
+![image-20200916160916888](https://user-images.githubusercontent.com/69428620/94989583-e89e3f00-05b0-11eb-8cfe-bb23dedbc997.png)
+.png
 
 ## swarm 환경 구성 후 할일
 
@@ -144,7 +145,8 @@ config.vm.network "private_network", ip: "192.168.111.100/101/102"
 
 경로: c:\swarm
 
-![image-20201001194542570](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201001194542570.png)
+![image-20201001194542570](https://user-images.githubusercontent.com/69428620/94989597-09669480-05b1-11eb-96b4-d0dc3015a367.png)
+
 
 ##### 1) 각각 ip/hostname 설정하기
 
@@ -169,7 +171,8 @@ $ reboot
 
 ##### 2) bitvise로 각각 가상머신 접속
 
-![image-20201001194738859](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201001194738859.png)
+![image-20201001194738859](https://user-images.githubusercontent.com/69428620/94989611-18e5dd80-05b1-11eb-9e04-2d1c253203f6.png)
+
 
 ### #5. 매니저 역할의 서버에서 스웜 클러스터를 시작
 
@@ -436,7 +439,8 @@ root@swarm-manager:~# docker service create --constraint 'node.role != manager' 
 
 도커 데몬 자체에 라벨을 설정해 제한함 (도커 데몬 실행 옵션을 변경해야함)
 
-![image-20201002022710991](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201002022710991.png)
+![image-20201002022710991](https://user-images.githubusercontent.com/69428620/94989622-2bf8ad80-05b1-11eb-99d6-5703ce584c78.png)
+
 
 
 
@@ -958,7 +962,8 @@ ywuvres5iicc        ingress             overlay             swarm
 
 
 
-![image-20200917164234401](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917164234401.png)
+![image-20201002022710991](https://user-images.githubusercontent.com/69428620/94989634-43379b00-05b1-11eb-8845-7035f4b45ead.png)
+
 
  **라우팅 메시**:어떤 노드에 접근하더라도 서비스 내의 컨테이너에 접근할 수 있게 설정 
 
@@ -1011,9 +1016,11 @@ docker_gwbridge 네트워크와 함께 사용된다.
 
 - 컨테이너 내부의 네트워크에서 eth1과 연결됨
 
-![image-20200917161629336](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917161629336.png)
+![image-20200917161629336](https://user-images.githubusercontent.com/69428620/94989640-4df23000-05b1-11eb-8ac6-89d0e0688b68.png)
 
-![image-20200918095811808](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200918095811808.png)
+
+![image-20200918095811808](https://user-images.githubusercontent.com/69428620/94989645-59ddf200-05b1-11eb-9f02-b7204101b3fd.png)
+
 
 
 
@@ -1084,7 +1091,8 @@ eth0      Link encap:Ethernet  HWaddr 02:42:0a:00:09:03
 
 ==> 10.0.9.4 와 10.0.9.3 로 manager와 worker1에 떨어져 있지만, 동일한 네트워크 대역이다!
 
-![image-20200917180054953](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917180054953.png)
+![image-20200917180054953](https://user-images.githubusercontent.com/69428620/94989652-64988700-05b1-11eb-9d5a-0835e966b111.png)
+
 
 
 
@@ -1191,7 +1199,8 @@ root@1d62bb2c85bd:/# curl -s server | grep Hello
         <p>Hello,  4a6338bc2639</p>     </blockquote>
 ```
 
-![image-20200917173115215](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917173115215.png)
+![image-20200917173115215](https://user-images.githubusercontent.com/69428620/94989667-78dc8400-05b1-11eb-92b2-f8bdd1c0d2f3.png)
+
 
 ### #7  sever 서비스의 VIP 확인
 
@@ -1333,13 +1342,15 @@ verify : Detected task failure
 >
 >    ex) level: info         -> level:info 해도 에러  & level : info 해도 에러임!!!!!
 >
->    ![image-20200917155322472](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917155322472.png)
+>   ![image-20200917155322472](https://user-images.githubusercontent.com/69428620/94989679-8a259080-05b1-11eb-90ac-c3014d32d7fd.png)
+
 
 ```
 Error response from daemon: rpc error: code = DeadlineExceeded desc = context deadline exceeded
 ```
 
-![image-20200917154401037](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917154401037.png)
+![image-20200917154401037](https://user-images.githubusercontent.com/69428620/94989687-94e02580-05b1-11eb-9b50-eb6e19e95358.png)
+
 
 =======> ,  있으면 안되는 곳에 있어서 난 에러
 
