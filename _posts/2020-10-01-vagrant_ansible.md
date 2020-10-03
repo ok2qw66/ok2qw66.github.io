@@ -147,7 +147,7 @@ C:\HashiCorp\WorkDir>vagrant ssh
 >
 > 3.  툴 사용해서 priveate_key 임포트 후 접속하기
 >
->    ![image-20201001132916584](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201001132916584.png)
+>    ![image-20201001132916584](https://user-images.githubusercontent.com/69428620/94990450-3027c980-05b7-11eb-9dd6-5b8a4b8c34c1.png)
 
 
 
@@ -229,11 +229,11 @@ C:\Users\USER명\VirtualBox VMs
 
 - ova 또는 ovf 파일 만들기
 
-![image-20201001140757891](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201001140757891.png)
+![image-20201001140757891](https://user-images.githubusercontent.com/69428620/94990455-3a49c800-05b7-11eb-8563-aba88d4f7704.png)
 
 - ova 또는 ovf 파일 가져오기
 
-![image-20201001140904242](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201001140904242.png)
+![image-20201001140904242](https://user-images.githubusercontent.com/69428620/94990460-433a9980-05b7-11eb-972f-b44861f06e11.png)
 
 
 
