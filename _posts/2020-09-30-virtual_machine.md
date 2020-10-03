@@ -48,7 +48,8 @@ VDI = VirtualBox Disk Image
 
 
 
-![image-20200930233733090](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200930233733090.png)
+![image-20200930233733090](https://user-images.githubusercontent.com/69428620/94990494-8137bd80-05b7-11eb-8384-225d5481efcb.png)
+
 
 ---
 
@@ -95,7 +96,8 @@ Virtual Machine    **<<<----** host machine  **----**   외부 네트워크
 
 
 
-![image-20201001002548287](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201001002548287.png)
+![image-20201001002548287](https://user-images.githubusercontent.com/69428620/94990496-898ff880-05b7-11eb-9106-e59eacb57a84.png)
+
 
 - Windows 환경
 
@@ -365,13 +367,15 @@ sudo systemctl stop ufw
 
 - HOST에서 VM으로 접속 -> 포트포워딩 필요
 
-![image-20200907104018503](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200907104018503.png)
+![image-20200907104018503](https://user-images.githubusercontent.com/69428620/94990499-94e32400-05b7-11eb-9b97-8eca8e4e2773.png)
+
 
 22번 포트로 연결한다
 
  HOST 에서 접속 가능
+ 
+![image-20200907104130562](https://user-images.githubusercontent.com/69428620/94990500-9c0a3200-05b7-11eb-814c-bd923154aeda.png)
 
-![image-20200907104130562](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200907104130562.png)
 
 ```
 # 22번 포트로 ubuntu 계정에 접속
