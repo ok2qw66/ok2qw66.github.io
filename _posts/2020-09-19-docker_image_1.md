@@ -2,7 +2,7 @@
 title:  "django project docker image에 올리기(1)"
 date:   2020-09-19 12:15:50 +0900
 categories: 
-  - Docker
+  - Image build with Django Project
 tags:
   - Docker
   - Python

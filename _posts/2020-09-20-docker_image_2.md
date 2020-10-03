@@ -1,7 +1,9 @@
 ---
 title:  "django project docker image에 올리기(2)"
 date:   2020-09-20 01:16:50 +0900
-categories: 
+categories:
+  - Image build with Django Project
+tags: 
   - Docker
   - ffmpeg
 ---
@@ -295,7 +297,7 @@ During handling of the above exception, another exception occurred:
 
    1) https://velog.io/@hongji3354/Docker%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-MariaDB-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
- 
+
 - ffmpeg로 mp3 파일 수정하기
 
    1) https://enfanthoon.tistory.com/109
@@ -303,7 +305,7 @@ During handling of the above exception, another exception occurred:
    2) https://www.winhelponline.com/blog/split-video-audio-multiple-parts-equal/
    
    3) https://www.tecmint.com/install-ffmpeg-in-linux/
-  
+
 
 
 
