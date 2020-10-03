@@ -12,7 +12,7 @@ tags:
 # docker swarm
 
 ![image-20200916160916888](https://user-images.githubusercontent.com/69428620/94989583-e89e3f00-05b0-11eb-8cfe-bb23dedbc997.png)
-.png
+
 
 ## swarm 환경 구성 후 할일
 
