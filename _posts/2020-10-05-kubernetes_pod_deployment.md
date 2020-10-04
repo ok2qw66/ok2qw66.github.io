@@ -29,7 +29,7 @@ tags:
 
 https://m.blog.naver.com/sharplee7/221728275736
 
-![image-20201003223123338](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20201003223123338.png)
+![image-20201003223123338](https://user-images.githubusercontent.com/69428620/95019443-4eb5bf80-06a0-11eb-921c-17987d15e254.png)
 
 #### 마스터 노드
 
