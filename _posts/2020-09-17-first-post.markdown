@@ -1,67 +1,59 @@
 ---
-title:  "First Post!"
+title: First Post!
 date:   2020-09-17 01:11:50 +0900
 categories: 
-  - test
+  - How To Start
 tags:
   - Blog
+toc: true
+toc_sticky: true
+toc_label: "환경설정"
 ---
 
-### 첫번째 테스트 글 작성
+# 환경설정 및 테스트 서버 띄우기
+
+github 블로그를 시작하기전 Windows 상에서 설치 및 환경 세팅을 하려고 한다.
+
+<br>
+
+### 1. 루비 설치하기
+
+ [Ruby Installer Page](https://rubyinstaller.org/downloads/)에서 DevKit가 포함된 exe 파일을 다운받아 Ruby를 설치한다
+
+(Ruby 설치 이후 DevKit 개발자 키트가 설치된다)
+
+<br>
+
+### 2. Start Command Prompt with Ruby 실행
+
+Windows 탐색기에서 Start Command Prompt with Ruby를 실행한다.
 
 
 
-드디어 첫번째 글을 작성할 수 있게 되었다!!
-
-지금까지 오게 된 (첫번째 글을 작성하게 된) 과정을 작성하겠다 
+![image-20200917012447987](https://user-images.githubusercontent.com/69428620/95226881-688a0a80-0838-11eb-8168-1a06fce202af.png)
 
 
-
-참고 사이트
-
-https://shryu8902.github.io/_posts/2018-06-22-jekyll-on-windows/
-
-: 대부분의 글들이 linux 환경에서 설치하는 법이었다.
-
-그래서 windows에서 git.io 만드는 법을 찾았다!
-
-![image-20200917012447987](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20200917012447987.png)
-
-==> 윈도우 탐색기에서 Start Command Prompt with Ruby 실행
-
-해당 창에서 밑에 명령어를 작성했다.
-
-
-
-> 하라는 대로 했지만... index가 깨져 나왔다
->
-> 초보인 나는 아직 무슨 문제인지 모른다... **나중에 찾아봐야됨**
 
 
 
 ------
 
+<br>
 
+### 3. jekyll 설치
 
-https://brianm.me/posts/how-to-make-jekyll-site-blog
+2에서 띄운 Ruby Command 창에서 해당 명령어를 입력한다.
 
-: 위에 사이트 만으로는 jekyll template이 만들어지지 않아서 찾은 방법
+``jekyll new path/to/directory``
 
+- 주의사항 : path/to/directory 경로는 새로 생성될 경로여야 한다
 
-
-#### Getting Started 부분
-
-```
-jekyll new path/to/directory
-```
-
-
+  (즉, 새로 생성될 폴더명을 기재한다)
 
 ```
 ruby 2.7.1p83 (2020-03-31 revision a0c7c23c9c) [x64-mingw32]
 
-# 내가 만들 blog 파일이 들어가는 디렉터리
-C:\Users\i>cd ok2qw66
+C:\Users\i>cd ok2qw66  -> 내가 만들 blog 파일이 들어가는 디렉터리
 
 # ok2qw66 폴더가 이미 존재해서 이곳에는 받을 수 없었다..
 # docs 폴더를 새로 생성해 template을 받음
@@ -134,11 +126,11 @@ C:\Users\i\ok2qw66\docs>dir
 
 ```
 
-template을 받는데는 성공했다!
 
 
+### 4. _config.yml 작성
 
-#### _config.yml 작성하기
+_config.yml 파일을 개인에 맞춰 설정을 변경한다.
 
 ```
 title: 새요의 공부하새요 블로그
@@ -170,38 +162,41 @@ exclude:
 
 
 
-> 아직 잘 모르겠으니 그냥 하라는 대로 넣어보았다.
-
-
-
 ------
 
+<br>
 
+### 5. Front Matter 작성
 
+블로그 글을 작성하는 규칙이다.  제목, 카테고리, 태그 등의 정보를 작성한다.
 
-
-#### Front Matter
+- 지금 작성한 글의 Front Matter 예시
 
 ```
-layout: post
-title: How to Make a Jekyll Site/Blog
-slug: how-to-make-jekyll-site-blog
-modified: 2020-05-25 01:05 CDT
-description: A tutorial on making a Jekyll based site/blog.
-author: brian
-seo.type: BlogPosting
-image: How to Make a Jekyll Site/Blog
+title: First Post!
+date:   2020-09-17 01:11:50 +0900
+categories: 
+  - How To Start
+tags:
+  - Blog
+toc: true
+toc_sticky: true
+toc_label: "환경설정"
 ```
 
-> 블로그 글을 작성하는 기준? 틀?인거 같다
+- title : 게시글 제목
+- date : 작성일자
+- categorites : 카테고리명 , 여러 개 작성 가능
+- tags: 태그명, 여러 개 작성 가능
+- ``toc: true`` : 블로그 글에서 h1~h6까지의 제목 목록 보여주기 설정
+- ``toc_sticky: true`` :  toc을 사이드바에 고정(스크롤바에 상관없이 고정)
+- ``toc_label`` : toc의 제목라벨
 
+<br>
 
+###  6. 로컬 테스트 서버 시작
 
-# 우선 시작해보자!
-
-
-
-####  서버 시작하기
+``jekyll serve`` 또는 ``bundle exec jekyll serve``
 
 ```
 C:\Users\i\ok2qw66\docs>jekyll serve
@@ -218,12 +213,20 @@ Configuration file: C:/Users/i/ok2qw66/docs/_config.yml
 
 ```
 
+<br>
 
+### 7. 테스트 서버 접속
+
+http://127.0.0.1:4000으로 접속하면 확인할 수 있다.
 
 ---
 
-> 잘 뜬다!
->
-> 문제는 이미지가 안들어간다는 점?
->
-> 이건 추후에 다시 해보기로하자!
+<br>
+
+참고 사이트 :<br>
+
+[https://shryu8902.github.io/_posts/2018-06-22-jekyll-on-windows/](https://shryu8902.github.io/_posts/2018-06-22-jekyll-on-windows/)<br>
+
+[https://jekyllrb.com/docs/installation/windows/](https://jekyllrb.com/docs/installation/windows/)
+
+[https://brianm.me/posts/how-to-make-jekyll-site-blog](https://brianm.me/posts/how-to-make-jekyll-site-blog)
