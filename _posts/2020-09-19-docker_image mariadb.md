@@ -17,7 +17,7 @@ toc_label: "MariaDB 세팅"
 
 github 주소 : [https://github.com/multicampus-cloud/django_playlist](https://github.com/multicampus-cloud/django_playlist)
 
-- 프로젝트 설명
+- 프로젝트 설명 : [https://docs.google.com/presentation/d/1nQJRT-v-gONDdMPFjXfRDHQU7-fiS75qFQvJBi7hRRw/edit?usp=sharing](https://docs.google.com/presentation/d/1nQJRT-v-gONDdMPFjXfRDHQU7-fiS75qFQvJBi7hRRw/edit?usp=sharing)
 
   YouTube에서 국내외에 관계없이 수 많은 노래들을 들을 수 있다.<br>
 
