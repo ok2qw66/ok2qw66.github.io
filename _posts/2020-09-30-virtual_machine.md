@@ -6,10 +6,8 @@ categories:
 tags:
   - VirtualBox
   - Network
-  - Runlevel
-  - mount
-  - shell
-  - cron
+toc: true
+toc_sticky: true
 ---
 
 
