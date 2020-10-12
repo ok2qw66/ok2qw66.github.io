@@ -6,6 +6,7 @@ categories:
 tags:
   - Vagrant
   - Ansible
+toc: true
 ---
 
 # Vagrant
