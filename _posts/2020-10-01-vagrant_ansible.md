@@ -27,7 +27,7 @@ toc: true
 
 
 
-### vagrant 장점/단점
+## vagrant 장점/단점
 
 ---
 
@@ -40,11 +40,21 @@ toc: true
 
 ​	
 
-### Vagrant 기본 명령어
+## Vagrant 기본 명령어
 
 ---
 
-1. vagrant init :  Vagrantfile 파일 생성
+
+| 명령어                   | 내용                                  |
+| ----------------------- | ------------------------------------- |
+| vagrant init            | Vagrantfile 파일 생성                  |
+| vagrant up              | 가상머신 생성하고 기동시작              |
+| vagrant halt            | 가상머신 중지                          |
+| vagrant ssh             | 가상머신 내부 접속                      |
+
+<br>
+
+### 1. vagrant init :  Vagrantfile 파일 생성
 
 ```
 C:\HashiCorp\WorkDir>vagrant init
@@ -82,7 +92,7 @@ C:\HashiCorp\WorkDir>dir
 
   
 
-2. vagrant up : 가상머신 생성하고 기동시작
+### 2. vagrant up : 가상머신 생성하고 기동시작
 
 ```
 C:\HashiCorp\WorkDir>vagrant up
@@ -90,7 +100,7 @@ C:\HashiCorp\WorkDir>vagrant up
 
 
 
-3. vagrant halt : 가상머신 중지
+### 3. vagrant halt : 가상머신 중지
 
 ```
 C:\HashiCorp\WorkDir>vagrant halt
@@ -98,7 +108,7 @@ C:\HashiCorp\WorkDir>vagrant halt
 
 
 
-4. vagrant ssh : 가상머신 내부 접속
+### 4. vagrant ssh : 가상머신 내부 접속
 
 ```
 C:\HashiCorp\WorkDir>vagrant ssh
@@ -108,9 +118,9 @@ C:\HashiCorp\WorkDir>vagrant ssh
 
 
 
-##### ssh client 툴 사용해서 접속하기
+# ssh client 툴 사용해서 접속하기
 
-> 1. ip 확인  
+## 1. ip 확인  
 >
 >    ```
 >    [vagrant@demo ~]$ ip a
@@ -130,7 +140,8 @@ C:\HashiCorp\WorkDir>vagrant ssh
 >           valid_lft forever preferred_lft forever
 >    ```
 >
-> 2. key file 위치 찾기
+<br>
+## 2. key file 위치 찾기
 >
 >    ```
 >    C:\HashiCorp\WorkDir>vagrant ssh-config
@@ -146,13 +157,13 @@ C:\HashiCorp\WorkDir>vagrant ssh
 >      LogLevel FATAL
 >    ```
 >
-> 3.  툴 사용해서 priveate_key 임포트 후 접속하기
+## 3.  툴 사용해서 priveate_key 임포트 후 접속하기
 >
 >    ![image-20201001132916584](https://user-images.githubusercontent.com/69428620/94990450-3027c980-05b7-11eb-9dd6-5b8a4b8c34c1.png)
 
 
-
-5. vagrant snapshot save A :  A 라는 이름의 스냅샷 생성 
+<br>
+## 4. vagrant snapshot save A :  A 라는 이름의 스냅샷 생성 
 
    (vagrant snapshot --help 명령어로 상세내용 확인)
 
@@ -160,18 +171,18 @@ C:\HashiCorp\WorkDir>vagrant ssh
    # FirstSnapShot이란 이름으로 스냅샷 저장
    C:\HashiCorp\WorkDir> vagrant snapshot save FirstSnapshot
    ```
-
-6. vagrant destroy : 가상머신 삭제
+<br>
+## 5. vagrant destroy : 가상머신 삭제
 
    ```
    C:\HashiCorp\WorkDir> vagrant destroy
    ```
+<br>
+<br>
 
-   
 
 
-
-### Vagrantfile 파일
+# Vagrantfile 파일
 
 ---
 
@@ -211,7 +222,7 @@ SCRIPT
 
 
 
-### Vagrant 파일 위치
+## Vagrant 파일 위치
 
 ---
 
@@ -224,7 +235,7 @@ C:\Users\USER명\VirtualBox VMs
 
 
 
-### ova 또는 ovf 파일로 환경공유하기
+## ova 또는 ovf 파일로 환경공유하기
 
 ---
 
@@ -365,45 +376,49 @@ ansible을 통해 인프라 구성할 때 필요한 목록들을 inventory에 �
 
 
 
-### Ansible의 장점
+## Ansible의 장점
 
 - 환경 설정 및 구축 절차를 통일되게 기술할 수 있다
 - 매개 변수 등 환경의 차이를 관리할 수 있다 (**cf. vagrant는 부분설치 못함**)
 - 실행 전에 변경부분을 미리 파악할 수 있다
 
+<br>
 
+## Ansible 설치
 
-### Ansible 설치
-
-1. nginx 가 설치되어 있는지 확인
+### 1. nginx 가 설치되어 있는지 확인
 
    ```
    C:\HashiCorp\WorkDir>vagrant ssh
    [vagrant@demo ~]$ systemctl status nginx
    ```
+<br>
 
-2. ansible 설치하기
+### 2. ansible 설치하기
 
    ```
    [vagrant@demo ~]$ sudo systemctl stop nginx.service
    [vagrant@demo ~]$ sudo yum install -y epel-release
    [vagrant@demo ~]$ sudo yum install -y ansible
    ```
+<br>
 
-3. ansible 설치버전 확인
+### 3. ansible 설치버전 확인
 
    ```
    [vagrant@demo ~]$ ansible --version
    ansible 2.9.10
    ```
+<br>
 
-4. 서버 inventory에 localhost 추가하기
+### 4. 서버 inventory에 localhost 추가하기
 
    ```
    [vagrant@demo ~]$ sudo sh -c "echo \"localhost\" >> /etc/ansible/hosts"
    ```
+<br>
 
-5. ansible 명령어로  nginx 실행
+### 5. ansible 명령어로  nginx 실행
 
    ```
    [vagrant@demo ~]$ ansible localhost  -b -c local -m service -a "name=nginx state=started"
@@ -414,32 +429,33 @@ ansible을 통해 인프라 구성할 때 필요한 목록들을 inventory에 �
    - -c local : 대상 서버가 자기자신이므로 ssh 사용하지 않고 local로 연결
    - -m service : service 모듈 이용
    - -a "name=nginx state=started" : 모듈의 추가 인자
+<br>
 
-6. nginx 실행 상태 확인
+### 6. nginx 실행 상태 확인
 
    ```
    [vagrant@demo ~]$ systemctl status nginx.service
    ```
 
-   
+<br>   
+<br>
 
 
+# git 설치
 
-### git 설치
-
-#1 git 설치
+## #1 git 설치
 
 ```
 [vagrant@demo ~]$ sudo yum install -y git 
 ```
-
-#2 ansible-playbook-sample 레포지터리 클론 생성
+<br>
+## #2 ansible-playbook-sample 레포지터리 클론 생성
 
 ```
 [vagrant@demo ~]$ git clone https://github.com/devops-book/ansible-playbook-sample.git
 ```
-
-#3 playbook을 실행해서 구축  (development)
+<br>
+## #3 playbook을 실행해서 구축  (development)
 
 ```
 [vagrant@demo ~]$ cd ansible-playbook-sample/
@@ -452,8 +468,8 @@ ansible을 통해 인프라 구성할 때 필요한 목록들을 inventory에 �
 [vagrant@demo ansible-playbook-sample]$ curl localhost
 hello, development ansible
 ```
-
-#4 playbook을 실행해서 구축 (production)
+<br>
+## #4 playbook을 실행해서 구축 (production)
 
 ```
 [vagrant@demo ansible-playbook-sample]$ ansible-playbook -i production site.yml
@@ -510,8 +526,8 @@ localhost
 [webservers:children]
 production-webservers
 ```
-
-#5 실행 내용 정의를 확인 : role 별로 실행될 내용을 담고있는 디렉터리 5개 확인가능
+<br>
+## #5 실행 내용 정의를 확인 : role 별로 실행될 내용을 담고있는 디렉터리 5개 확인가능
 
 site.yml 파일 내용 중 roles 부분에 해당
 
@@ -545,8 +561,8 @@ drwxrwxr-x. 7 vagrant vagrant  92 Sep 10 02:34 serverspec_sample
   main.yml 
   ```
 
-
-#6 각 role 의 main.yml 내용
+<br>
+## #6 각 role 의 main.yml 내용
 
 ```
 [vagrant@demo roles]$ cat ./common/tasks/main.yml
@@ -576,8 +592,8 @@ drwxrwxr-x. 7 vagrant vagrant  92 Sep 10 02:34 serverspec_sample
   service: name=nginx state=started enabled=yes
 #### service 모듈은 nginx를 started 상태로 만들고 enabled하게 만든다
 ```
-
-#7 템플릿에서 사용하는 변수 값을 확인
+<br>
+## #7 템플릿에서 사용하는 변수 값을 확인
 
 ```
 [vagrant@demo ansible-playbook-sample]$ ls ./group_vars/
@@ -586,15 +602,15 @@ development-webservers.yml  production-webservers.yml
 [vagrant@demo ansible-playbook-sample]$ cat ./group_vars/development-webservers.yml
 env: "development"
 ```
-
-#8 템플릿 내용을 변경 (뒤에 !!! 붙이기)
+<br>
+## #8 템플릿 내용을 변경 (뒤에 !!! 붙이기)
 
 ```
 [vagrant@demo ansible-playbook-sample]$ cat ./roles/nginx/templates/index.html.j2
 HELLO, {{ env }} ansible!!!
 ```
-
-#9 dry-run 모드로 실행
+<br>
+## #9 dry-run 모드로 실행
 
 => 반영된 결과를 미리보기 가능 (변경 내용 실제로 반영x) 
 
@@ -633,8 +649,8 @@ run-dry 모드로 실행해서 실제 결과는 달라지지 않음
 [vagrant@demo ansible-playbook-sample]$ curl localhost
 hello, production ansible
 ```
-
-#10 실제 결과에 반영하기
+<br>
+## #10 실제 결과에 반영하기
 
 ```
 # 변경사항 호스트에 반영
@@ -646,7 +662,7 @@ HELLO, development ansible!!!
 ```
 
 
-
+<br>
 
 
 > > 만약 개발/운영 환경 동시에 제어해야 한다면?
@@ -685,13 +701,13 @@ HELLO, development ansible!!!
 
   
 
-  
+  <br>
 
-### Serverspec 설치
+# Serverspec 설치
 
 ---
 
-#### Serverspect 이란?
+## Serverspect 이란?
 
 - 테스트를 쉽고 간단하게 수행하기 위한 도구
 - 인프라(서버) 설정 테스트 가능
@@ -700,9 +716,9 @@ HELLO, development ansible!!!
 
 
 
-#### Ansible을 이용해서 Serverspec 설치
+## Ansible을 이용해서 Serverspec 설치
 
-**#1 rvm 및 ruby 설치**
+### #1 rvm 및 ruby 설치
 
 rvm : rubu version manager : 루비 원하는 버전을 설치하는 가장 쉬운 방법
 
@@ -778,8 +794,8 @@ ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux]
 ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux]
 
 ```
-
-**#2 Playbook 파일(site.yml)에서 serverspec 롤을 추가**
+<br>
+### #2 Playbook 파일(site.yml)에서 serverspec 롤을 추가
 
 ```
 ---
@@ -793,8 +809,8 @@ ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux]
 #    - serverspec_sample
 #    - jenkins
 ```
-
-**#3 serverspec 롤을 확인**
+<br>
+### #3 serverspec 롤을 확인
 
 ```
 [vagrant@demo ansible-playbook-sample]$ cat ./roles/serverspec/tasks/main.yml
@@ -813,8 +829,8 @@ ruby 2.7.0p0 (2019-12-25 revision 647ee6f091) [x86_64-linux]
    - rake
    - serverspec
 ```
-
-**#4 ansible-playbook으로 Serverspec 설치**
+<br>
+### #4 ansible-playbook으로 Serverspec 설치
 
 ```
 [vagrant@demo ansible-playbook-sample]$ ansible-playbook -i development site.yml --diff
@@ -868,8 +884,8 @@ TASK [install serverspec] --------------------------rake, serverspec 설치 완�
 ​    changed: [localhost] => (item=serverspec)
 
 
-
-**#5 Serverspec 설정**
+<br>
+### #5 Serverspec 설정
 
 ```
 [vagrant@demo ansible-playbook-sample]$ serverspec-init
@@ -895,8 +911,8 @@ Select number: 2
  + .rspec
 
 ```
-
-**#6 sample_spec.rb 파일을 확인**
+<br>
+### #6 sample_spec.rb 파일을 확인
 
 ```
 [vagrant@demo ansible-playbook-sample]$ cat ./spec/localhost/sample_spec.rb
@@ -917,23 +933,23 @@ describe port(80) do
 end
 ```
 
+<br>
 
-
-**#7 Serverspec을 이용한 테스트 실행**
+### #7 Serverspec을 이용한 테스트 실행
 
 ```
 [vagrant@demo ansible-playbook-sample]$ rake spec
 ```
 
 
+<br>
+<br>
 
-
-
-#### Ansible을 이용해서 Serverpec에서 사용하는 테스트 케이스(_sepc.rb)를 자동으로 생성
+## Ansible을 이용해서 Serverpec에서 사용하는 테스트 케이스(_sepc.rb)를 자동으로 생성
 
 ==> 자동으로 생성만 해주는 거지 테스트 실행해주진 않는다
 
-**#1 Playbook 파일(site.yml)에 serverspec_sample 롤(role)을 추가**
+### #1 Playbook 파일(site.yml)에 serverspec_sample 롤(role)을 추가
 
 [vagrant@demo ansible-playbook-sample]$ vi site.yml
 
@@ -949,8 +965,8 @@ end
     - serverspec_sample  ---------> 주석해제
 #    - jenkins
 ```
-
-**#2 serverspec_sample 태스트 파일을 확인**
+<br>
+### #2 serverspec_sample 태스트 파일을 확인
 
 > *_spec.rb 파일을 테스트 파일을 의미
 
@@ -1009,9 +1025,9 @@ describe file('/usr/share/nginx/html/index.html') do
 end
 ```
 
+<br>
 
-
-**#3 ansible-playbook으로 spec 파일(테스트 케이스 파일)을 배포**
+### #3 ansible-playbook으로 spec 파일(테스트 케이스 파일)을 배포
 
 ```
 [vagrant@demo ansible-playbook-sample]$ ansible-playbook -i development site.yml
@@ -1039,8 +1055,8 @@ localhost                  : ok=9    changed=2    unreachable=0    failed=0    s
   ------> 템플릿 이용해서 web_spec.rb 파일을 정상적으로 생성
 
 
-
-**#4 spec 파일(테스트 케이스를 정의) 생성을 확인**
+<br>
+### #4 spec 파일(테스트 케이스를 정의) 생성을 확인
 
 ```
 [vagrant@demo ansible-playbook-sample]$ cat /tmp/serverspec_sample/spec/localhost/web_spec.rb
@@ -1067,8 +1083,8 @@ describe file('/usr/share/nginx/html/index.html') do
 end
 
 ```
-
-**#5 (ansible을 이용해서 자동으로 생성한 spec 파일을 이용해서) 테스트를 실행**
+<br>
+### #5 (ansible을 이용해서 자동으로 생성한 spec 파일을 이용해서) 테스트를 실행
 
 ==> 작업 디렉터리(테스트 디렉터리)로 이동해서 테스트 실행
 
@@ -1108,8 +1124,8 @@ Failures:
 
 
 ```
-
-**#6 테스트 케이스를 통과하도록 컨텐츠를 수정 → 컨텐츠 형식을 정의하고 있는 템플릿 파일을 수정**
+<br>
+### #6 테스트 케이스를 통과하도록 컨텐츠를 수정 → 컨텐츠 형식을 정의하고 있는 템플릿 파일을 수정
 
 ```
 [vagrant@demo ansible-playbook-sample]$ cat ~/ansible-playbook-sample/roles/nginx/templates/index.html.j2
@@ -1121,8 +1137,8 @@ Hello, {{ env }} ansible!!
 
 
 ```
-
-**#7 ansible-playbook으로 수정한 템플릿에 맞춰서 새롭게 index.html을 생성**
+<br>
+### #7 ansible-playbook으로 수정한 템플릿에 맞춰서 새롭게 index.html을 생성
 
 ```
 [vagrant@demo ansible-playbook-sample]$ ansible-playbook -i development site.yml
@@ -1133,9 +1149,8 @@ changed: [localhost]   --> index.html 수정한 내용 반영
 ....
 ```
 
-
-
-**#8 테스트를 실행**
+<br>
+### #8 테스트를 실행
 
 ```
 [vagrant@demo ansible-playbook-sample]$ cd /tmp/serverspec_sample/
@@ -1145,8 +1160,8 @@ changed: [localhost]   --> index.html 수정한 내용 반영
 Finished in 0.10557 seconds (files took 0.41014 seconds to load)
 7 examples, 0 failures	===> 7개 케이스 모두 통과함
 ```
-
-**#9 nginx를 중지 후 테스트 실행**
+<br>
+### #9 nginx를 중지 후 테스트 실행
 
 ```
 # nginx 중지하기
@@ -1174,8 +1189,8 @@ File "/usr/share/nginx/html/index.html"
   content
     is expected to match /^Hello, development ansible!!$/
 ```
-
-**#10 테스트 결과를 HTML 형식으로 출력**
+<br>
+### #10 테스트 결과를 HTML 형식으로 출력
 
 ```
 [vagrant@demo serverspec_sample]$ sudo gem install coderay
@@ -1202,7 +1217,7 @@ File "/usr/share/nginx/html/index.html"
 가상 머신으로 접속이 안 될 때 sudo systemctl stop firewalld 명령으로 방화벽 해제
 
 
-
+<br>
 
 
 > nginx는 어떻게 띄워지고 작동하는건가요?
@@ -1215,7 +1230,7 @@ File "/usr/share/nginx/html/index.html"
 
 ---> cento 안에서는 nginx가 돌고 잇다!!!!
 
-
+<br>
 
 nginx접근하려면 ip주소 필요..
 
