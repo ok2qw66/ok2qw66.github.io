@@ -9,7 +9,7 @@ toc: true
 toc_sticky: true
 ---
 
-### 출처 : https://programmers.co.kr/learn/courses/30/lessons/42583
+출처 : https://programmers.co.kr/learn/courses/30/lessons/42583
 
 <br>
 
