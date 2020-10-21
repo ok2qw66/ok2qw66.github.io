@@ -1,5 +1,5 @@
 ---
-title:  "오픈채팅방 from 프로그래머스"
+title:  "오픈채팅방 from 프로그래머스 "
 date:   2020-10-20 15:25:50 +0900
 categories: 
   - 알고리즘
@@ -93,7 +93,7 @@ Prodo님이 들어왔습니다.
 
 ```python
 def solution(record):
-    # 답 리스트
+    # 답 담을 리스트
 	answer = []
 	# 출력할 명령어(Enter/Leave만),id 담는 리스트
     temp = []
