@@ -81,17 +81,22 @@ def re_arrange(board):
     row_len = len(board)
     col_len = len(board[0])
     
+    # col 별로 밑에서부터 값있는 칸으로 채워주기
     for y in range(col_len):
+        # i : 이동하는 인덱스 (값이 있는 칸을 찾아서 j에 넣어주는 역할)
+        # j : 기준 인덱스 (값이 없는 칸에 위치)
         i,j = row_len-1, row_len-1
         while True:
             if i <0:
                 break
+            # 현재 기준 j 위치 칸에 값이 있다면 그위로 올라가기
             if board[j][y] != -1:
                 j -=1
+            # 현재 기준 j 위치 칸에 값이 없고 가장 근접한 i에 값이 있다면 넣어주기
             elif board[i][y] != -1:
                 board[j][y],board[i][y] = board[i][y],board[j][y]
+                # 한칸위로 이동
                 j = j-1
-            
             i -=1
     return board
 
@@ -99,10 +104,14 @@ def re_arrange(board):
 # 2*2 블록 삭제
 def delete_sqr(board,delete_list):
     count = 0
+    # 제거할 칸을 -1 값으로 만들고 count 추가
     for x,y in delete_list:
+        # -1 이 아니다 => 처음 지우는 경우다
+        # count 추가 & 해당 칸 -1로 만들기
         if board[x][y] != -1:
             count += 1
             board[x][y] = -1
+    # board 중간에 -1이 없도록 정리하기
     new_board = re_arrange(board)
     return new_board,count
 
@@ -112,15 +121,18 @@ def find_sqr(board):
     delete_list = list()
     for x in range(len(board)-1):
         for y in range(len(board[0])-1):
+            # 사각형 만들 때 기준이 되는 칸
             standard = board[x][y]
+            # 해당 기준 칸이 비어있다면 패스
             if standard == -1:
                 continue
+            # 해당 기준 칸을 기준으로 옆,아래,대각선의 값이 모두 동일하다면 삭제할 배열에 추가
             if standard == board[x][y+1] and standard == board[x+1][y] and standard == board[x+1][y+1]:
                 delete_list.append([x,y])
                 delete_list.append([x+1,y])
                 delete_list.append([x,y+1])
                 delete_list.append([x+1,y+1])
-   
+    # 블록 삭제함수(+보드 재정리) 계산값을 리턴
     return delete_sqr(board,delete_list)
 
 
@@ -128,13 +140,16 @@ def solution(m, n, board):
     answer = 0
     
     nb = [[]*n]*m
+    # 문자열로 구성된 row를 list 형태로 만들기
     for row in range(m):
         nb[row] = list(board[row])
                 
     while True:
         nb,delete_num = find_sqr(nb)
+        # 동일 사각형 블록 삭제/정리 후에 삭제한 칸 개수를 answer에 넣기
         if delete_num:
             answer += delete_num
+        # 더이상 삭제한 칸이 없다 => 계산 끝
         else:
             break
     return answer
