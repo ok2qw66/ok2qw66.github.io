@@ -146,7 +146,7 @@ def solution(m, n, board):
                 
     while True:
         nb,delete_num = find_sqr(nb)
-        # 동일 사각형 블록 삭제/정리 후에 삭제한 칸 개수를 answer에 넣기
+        # 동일 블록 삭제/정리 후에 삭제한 칸 개수를 answer에 넣기
         if delete_num:
             answer += delete_num
         # 더이상 삭제한 칸이 없다 => 계산 끝
