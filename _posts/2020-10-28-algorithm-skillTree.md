@@ -32,7 +32,7 @@ toc_sticky: true
 - 선행 스킬 순서 skill의 길이는 1 이상 26 이하이며, 스킬은 중복해 주어지지 않습니다.
 - skill_trees는 길이 1 이상 20 이하인 배열입니다.
 - skill_trees의 원소는 스킬을 나타내는 문자열입니다.
-  - skill_trees의 원소는 길이가 2 이상 26 이하인 문자열이며, 스킬이 중복해 주어지지 않습니다.
+- skill_trees의 원소는 길이가 2 이상 26 이하인 문자열이며, 스킬이 중복해 주어지지 않습니다.
 
 ##### 입출력 예
 
@@ -48,7 +48,12 @@ toc_sticky: true
 - BDA: B 스킬을 배우기 전에 C 스킬을 먼저 배워야 합니다. 불가능한 스킬트리입니다.
 
 ---
-
+<br>
+경우의 수 - skill = `'CBD'`라고 가정<br>
+1. skill에서 0개 스킬이 있는 경우<br>
+2. skill에서 1개의 스킬이 있는 경우 - C만 존재<br>
+3. skill에서 2개의 스킬이 있는 경우 - C,B가 존재 & C가 B앞에 있어야함<br>
+4. skill에서 3개의 스킬이 있는 경우 - C,B,D가 존재 & C가 B앞에, B가 D앞에 있어야함<br>
 <br>
 
 ### 코드
@@ -95,7 +100,7 @@ def solution(skill,skill_tree):
     for i in skill_tree:
         skill_list=''
         for z in i:
-            # 만약에 스킬이 존재한다면 순서대로 skill_list 만들기
+            # 스킬이 존재한다면 순서대로 skill_list 만들기
             if z in skill:
                 skill_list+=z
         # skill_list 과 동일하다면 답 증가
