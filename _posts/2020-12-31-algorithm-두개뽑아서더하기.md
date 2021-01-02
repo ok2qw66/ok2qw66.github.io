@@ -82,7 +82,7 @@ toc_sticky: true
 
 ## 작성 코드
 
-```PYTHON
+```python
 def solution(numbers):
     answer = []
     
