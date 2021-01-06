@@ -111,7 +111,7 @@ def solution(genres, plays):
 
 첫번째는 for문을 3번 돌려서 코드를 만들었다.
 
-![image-20210107001733155](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20210107001733155.png)
+![image-20210107001733155](https://user-images.githubusercontent.com/69428620/103785287-607f7800-507e-11eb-87f7-20244343be3c.png)
 
 간단하게 과정을 설명하자면....<br>
 
@@ -189,7 +189,7 @@ def solution(genres, plays):
 
 이중 for문이다보니 첫번째 코드보단 조금 더 시간이 소요된다.
 
-![image-20210107001613854](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20210107001613854.png)
+![image-20210107001613854](https://user-images.githubusercontent.com/69428620/103785292-62493b80-507e-11eb-8842-447423593933.png)
 
 1. 순서대로 하나씩 원소를 가져와서 
 
