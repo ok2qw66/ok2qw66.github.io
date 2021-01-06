@@ -83,36 +83,120 @@ def solution(genres, plays):
         
         first = totalPlay[genres[i]][1][0]
         second = totalPlay[genres[i]][1][1]
-        
+        # first 값 비교
         if first == -1:
             totalPlay[genres[i]][1][0] = i
-        elif plays[i] > plays[first]:
+        elif plays[i] > plays[first] or (plays[i] == plays[first] and i < first):
             totalPlay[genres[i]][1][0] = i
             totalPlay[genres[i]][1][1] = first
-        elif plays[i] == plays[first]:
-            if i > first:
-                totalPlay[genres[i]][1][1] = i
-            else:
-                totalPlay[genres[i]][1][0] = i
-                totalPlay[genres[i]][1][1] = first
-        elif second == -1:
+        elif plays[i] == plays[first] and i > first:
             totalPlay[genres[i]][1][1] = i
-        elif plays[i] > plays[second]:
+        # second 값 비교        
+        elif second == -1 or plays[i] > plays[second]:
             totalPlay[genres[i]][1][1] = i
-        elif plays[i] == plays[second]:
-            if i < second:
-                totalPlay[genres[i]][1][1] = second
+        elif plays[i] == plays[second] and i < second:
+            totalPlay[genres[i]][1][1] = second
             
-            
+    # play 총합 내림차순으로 정렬        
     sorting = sorted(totalPlay.values(),key=lambda x : -x[0])
-    
     
     for x in sorting:
         a,b = x[1]
-        if a != -1:
-            answer.append(a)
+        answer.append(a)
         if b != -1:
             answer.append(b)
         
     return answer
 ```
+
+첫번째는 for문을 3번 돌려서 코드를 만들었다.
+
+![image-20210107001733155](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20210107001733155.png)
+
+간단하게 과정을 설명하자면....<br>
+
+1. genre 이름을 key로 가진 dict 생성 (play total값, 첫번째/두번째로 큰 play 가진 idx 넣을 모양 세팅)
+2. 순서대로 genre별로 play total값, 첫번째/두번째로 큰 play 가진 idx 업데이트
+3. play total값으로 내림차순 정렬한 후 최대 2개씩 값을 answer에 저장
+
+<br>
+
+##### 첫번째 for문
+
+``for g in genre:
+        totalPlay[g] = [0,[-1,-1]]``<br>
+
+처음값을 세팅해주었다.  genre이름으로 dictionary를 만들어서
+
+[play total값, [첫번째로 큰 play 가진 idx, 두번째로 큰 play 가진 idx]] 이렇게 넣도록 하였다.
+
+ <br>
+
+##### 두번째 for문
+
+``for i in range(len(genres)):``<br>
+
+우선 해당 genre에 total값을 증가시켜주고, 첫번째/두번째로 큰 play 값을 비교해서 idx값을 업데이트 시켜준다
+
+(작성한 코드가 if연속으로 되어 있어서 가독성이 좋지 않다...)
+
+<br>
+
+##### 세번째 for문
+
+``for x in sorting:
+        a,b = x[1]
+        answer.append(a)
+        if b != -1:
+            answer.append(b)``<br>
+
+두번째 for문이 끝나고 play total 값 오름차순으로 정렬한 상태에서 첫번째/두번째로 큰 play 값 배열을 불러온다. 이때, -1로 되어있다면 값이 없는 것이기 때문에 pass 한다
+
+<br>
+
+---
+
+### 두번째 완성 코드
+
+```python
+def solution(genres, plays):
+    answer = []
+    total_sort = []
+    
+    for i in range(len(genres)):
+        for x in total_sort:
+            if x[0] == genres[i]:
+                x[1] += plays[i]
+                x[2].append([plays[i],i])
+                break
+        else:
+            total_sort.append([genres[i],plays[i],[[plays[i],i]]])
+                
+    total_sort = sorted(total_sort,key=lambda x: -x[1])
+    
+    for x in total_sort:
+        sorting = sorted(x[2],key=lambda x : (-x[0],x[1]))
+        print(sorting)
+        answer.append(sorting[0][1])
+    
+        if len(sorting) >= 2:
+            answer.append(sorting[1][1])
+    
+    return answer
+```
+
+두번째 작성한 코드는 이중 for문 + for문 으로 구성되어 있다.
+
+이중 for문이다보니 첫번째 코드보단 조금 더 시간이 소요된다.
+
+![image-20210107001613854](C:\Users\i\AppData\Roaming\Typora\typora-user-images\image-20210107001613854.png)
+
+1. 순서대로 하나씩 원소를 가져와서 
+
+   해당 genre가 존재하지 않는다면 새로 생성 / 기존에 있다면 업데이트
+
+2. total_sort 값을 play 총합값으로 내림차순 정렬
+
+3. paly 총합값으로 내림차순 정렬된 상태에서 play 큰순으로, idx 작은순으로 재정렬
+
+   정렬된 값중 제일 앞 2개값을 answer에 추가 
