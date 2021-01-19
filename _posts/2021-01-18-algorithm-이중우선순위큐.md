@@ -2,9 +2,9 @@
 title: "이중우선순위큐 from 프로그래머스"
 date : 2021-01-18 23:33:50 +0900
 categories:
-	- 알고리즘
+- 알고리즘
 tags:
-	- 프로그래머스
+- 프로그래머스
 toc: true
 toc_sticky: true
 ---
